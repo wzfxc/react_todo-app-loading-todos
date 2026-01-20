@@ -20,14 +20,6 @@ export const App: React.FC = () => {
     setSelectedFilter(method);
   };
 
-  useEffect(() => {
-    getTodos()
-      .then(setTodos)
-      .catch(() => {
-        setTodosLoadingError(true);
-      });
-  }, []);
-
   const visibleTodos = useCallback(
     (method: Filter) => {
       let filteredTodos = todos;
@@ -42,6 +34,21 @@ export const App: React.FC = () => {
     },
     [todos],
   );
+
+  const todosCounter = () => {
+    return todos.filter(todo => !todo.completed).length;
+  };
+
+  useEffect(() => {
+    getTodos()
+      .then(setTodos)
+      .catch(() => {
+        setTodosLoadingError(true);
+        setTimeout(() => {
+          setTodosLoadingError(false);
+        }, 3000);
+      });
+  }, []);
 
   if (!USER_ID) {
     return <UserWarning />;
@@ -59,6 +66,7 @@ export const App: React.FC = () => {
         {/* Hide the footer if there are no todos */}
         {todos.length !== 0 && (
           <Footer
+            todosCounter={todosCounter}
             onSelect={method => setFilter(method)}
             selectedFilter={selectedFilter}
           />

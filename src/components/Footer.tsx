@@ -4,13 +4,18 @@ import { Filter } from '../App';
 interface Props {
   onSelect: (selectedFilter: Filter) => void;
   selectedFilter: Filter;
+  todosCounter: () => number;
 }
 
-export const Footer: React.FC<Props> = ({ onSelect, selectedFilter }) => {
+export const Footer: React.FC<Props> = ({
+  onSelect,
+  selectedFilter,
+  todosCounter,
+}) => {
   return (
     <footer className="todoapp__footer" data-cy="Footer">
       <span className="todo-count" data-cy="TodosCounter">
-        3 items left
+        {`${todosCounter()} items left`}
       </span>
 
       {/* Active link should have the 'selected' class */}

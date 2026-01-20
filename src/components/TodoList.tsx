@@ -22,6 +22,7 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
               type="checkbox"
               className="todo__status"
               id={`todo-${todo.id}`}
+              checked={todo.completed}
             />
           </label>
 
