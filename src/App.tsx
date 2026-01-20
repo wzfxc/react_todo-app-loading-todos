@@ -5,16 +5,15 @@ import { UserWarning } from './UserWarning';
 import { getTodos, USER_ID } from './api/todos';
 import { TodoList } from './components/TodoList';
 import { Todo } from './types/Todo';
-import classNames from 'classnames';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
-
-export type Filter = 'all' | 'active' | 'completed';
+import { Filter } from './types/Filter';
+import { ErrorNotification } from './components/ErrorNotification';
 
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [todosLoadingError, setTodosLoadingError] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState<Filter>('all');
+  const [selectedFilter, setSelectedFilter] = useState<Filter>(Filter.all);
 
   const setFilter = (method: Filter) => {
     setSelectedFilter(method);
@@ -73,31 +72,7 @@ export const App: React.FC = () => {
         )}
       </div>
 
-      {/* DON'T use conditional rendering to hide the notification */}
-      {/* Add the 'hidden' class to hide the message smoothly */}
-      <div
-        data-cy="ErrorNotification"
-        className={classNames(
-          'notification is-danger is-light has-text-weight-normal',
-          { hidden: !todosLoadingError },
-        )}
-      >
-        <button data-cy="HideErrorButton" type="button" className="delete" />
-        {/* show only one message at a time */}
-        {todosLoadingError && <>Unable to load todos</>}
-        {false && (
-          <>
-            <br />
-            Title should not be empty
-            <br />
-            Unable to add a todo
-            <br />
-            Unable to delete a todo
-            <br />
-            Unable to update a todo
-          </>
-        )}
-      </div>
+      <ErrorNotification todosLoadingError={todosLoadingError} />
     </div>
   );
 };
